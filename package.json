@@ -1,0 +1,9 @@
+{
+  "name": "CoffeeMachineBackend",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security"
+  }
+}
