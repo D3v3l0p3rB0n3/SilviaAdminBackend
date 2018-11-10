@@ -1,5 +1,5 @@
 {
-  "name": "CoffeeMachineBackend",
+  "name": "SilviaAdminBackend",
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.18.3",
