@@ -22,7 +22,7 @@ mongoDB.connectToMongoDB().then(function(db) {
     restController.initializeController(router);
     app.use('/coffeemachine', router);
     app.listen(port, function () {
-        console.log('Server started on hostname ', hostname, ':', port);
+        console.log('Server started on hostname port ', port);
     });
 }, function(err) {
     console.error(err);
