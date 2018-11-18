@@ -3,7 +3,6 @@ var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
 
 //lokale skripte
-var mongoDB = require('./mongoDB');
 var restController = require('./restController');
 
 // configure app to use bodyParser()
@@ -18,12 +17,8 @@ var port = process.env.PORT || 8080;        // set our port
 var router = express.Router();              // get an instance of the express Router
 
 // rest interfaces are implemented here
-mongoDB.connectToMongoDB().then(function(db) {
-    restController.initializeController(router);
-    app.use('/coffeemachine', router);
-    app.listen(port, function () {
-        console.log('Server started on hostname port ', port);
-    });
-}, function(err) {
-    console.error(err);
+restController.initializeController(router);
+app.use('/coffeemachine', router);
+app.listen(port, function () {
+    console.log('Server started on port ', port);
 });
