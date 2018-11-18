@@ -10,7 +10,10 @@ module.exports = {
          * returns a timestamp when the machine was started
          */
         router.get('/machineStatus', function(req, res) {
-            res.json({ message: 'hooray! welcome to our get api!' });
+            res.json({
+                machineEnabled: machineStatus.getMachineStatus(),
+                timestamp: machineStatus.getTimestamp()
+            });
         });
         /**
          * Service to switch the status of the machine
@@ -18,7 +21,10 @@ module.exports = {
          */
         router.post('/machineStatus', function(req, res) {
             machineStatus.setMachineStatus();
-            res.json({ timestamp: machineStatus.getTimestamp()});
+            res.json({
+                machineEnabled: machineStatus.getMachineStatus(),
+                timestamp: machineStatus.getTimestamp()
+            });
         });
     }
 };

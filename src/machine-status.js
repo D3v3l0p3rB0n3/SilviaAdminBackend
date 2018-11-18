@@ -14,9 +14,10 @@ module.exports = {
         return timestamp;
     },
     setMachineStatus: function () {
+        fs.access()
         var gpioFile = fs.createWriteStream("/sys/class/gpio/gpio17/value");
         gpioFile.write("1");
-        gpioFile.end();
+        // gpioFile.end();
         machineEnabled = !machineEnabled;
         setTimestamp();
     },
