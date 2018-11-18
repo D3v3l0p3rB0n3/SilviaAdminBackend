@@ -14,15 +14,13 @@ module.exports = {
         return timestamp;
     },
     setMachineStatus: function () {
-        writeGPIO17(1).then(() => {
-            setTimestamp();
-        })
+        var gpioFile = fs.createWriteStream("/sys/class/gpio/gpio17/value");
+        gpioFile.write("1");
+        gpioFile.end();
+        machineEnabled = !machineEnabled;
+        setTimestamp();
     },
 };
-
-function writeGPIO17(value) {
-    return fs.writeFile("/sys/class/gpio/gpio17/value", value);
-}
 
 function setTimestamp() {
     timestamp = moment.now();
