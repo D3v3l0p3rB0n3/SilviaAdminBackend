@@ -16,7 +16,7 @@ module.exports = {
     setMachineStatus: function () {
         var gpioFile = fs.createWriteStream("/sys/class/gpio/gpio17/value");
         gpioFile.write("1");
-        // gpioFile.end();
+        gpioFile.end("0");
         machineEnabled = !machineEnabled;
         setTimestamp();
     },
