@@ -25,6 +25,9 @@ module.exports = {
             console.log('Error: ', err.toString())
         })
     },
+    getValue : function () {
+        gpio.setup(17, gpio.DIR_IN, readInput);
+    }
 };
 
 function setTimestamp() {
@@ -39,4 +42,12 @@ function writeGpioTrue(gpioNr) {
         .catch((err) => {
             console.log('Error: ', err.toString())
         })
+}
+
+function readInput(err) {
+    if (err) throw err;
+    gpio.read(17, function(err, value) {
+        if (err) throw err;
+        console.log('The value is ' + value);
+    });
 }
