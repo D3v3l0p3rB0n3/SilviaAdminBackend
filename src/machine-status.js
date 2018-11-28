@@ -15,7 +15,7 @@ module.exports = {
         return timestamp;
     },
     setMachineStatus: async function (_callback) {
-        gpio.setup(7, gpio.DIR_OUT, function (err) {
+        gpio.setup(17, gpio.DIR_OUT, function (err) {
             if (err) throw err;
             gpio.write(17, true, function(err) {
                 if (err) throw err;
