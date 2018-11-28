@@ -20,10 +20,11 @@ module.exports = {
          * returns a timestamp when the machine was started
          */
         router.post('/machineStatus', function(req, res) {
-            machineStatus.setMachineStatus();
-            res.json({
-                machineEnabled: machineStatus.getMachineStatus(),
-                timestamp: machineStatus.getTimestamp()
+            machineStatus.setMachineStatus(function() {
+                res.json({
+                    machineEnabled: machineStatus.getMachineStatus(),
+                    timestamp: machineStatus.getTimestamp()
+                });
             });
         });
     }

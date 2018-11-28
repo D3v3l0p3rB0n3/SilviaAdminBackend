@@ -1,4 +1,5 @@
 const fs = require('fs');
+var gpio = require('rpi-gpio');
 const moment = require('moment');
 
 
@@ -13,12 +14,15 @@ module.exports = {
     getTimestamp: function () {
         return timestamp;
     },
-    setMachineStatus: function () {
-        var gpioFile = fs.createWriteStream("/sys/class/gpio/gpio17/value");
-        gpioFile.write("1");
-        gpioFile.end("0");
-        machineEnabled = !machineEnabled;
-        setTimestamp();
+    setMachineStatus: async function (_callback) {
+        gpio.setup(7, gpio.DIR_OUT, function (err) {
+            if (err) throw err;
+            gpio.write(17, true, function(err) {
+                if (err) throw err;
+                console.log('Written to pin');
+                _callback()
+            });
+        });
     },
 };
 
