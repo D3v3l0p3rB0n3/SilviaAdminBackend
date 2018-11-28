@@ -14,13 +14,12 @@ module.exports = {
     getTimestamp: function () {
         return timestamp;
     },
-    setMachineStatus: function (_callback) {
+    setMachineStatus: function () {
         gpio.setup(17, gpio.DIR_OUT, function (err) {
             if (err) throw err;
             gpio.write(17, true, function(err) {
                 if (err) throw err;
                 console.log('Written to pin');
-                _callback()
             });
         });
     },
