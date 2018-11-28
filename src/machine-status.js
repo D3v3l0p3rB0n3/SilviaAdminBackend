@@ -1,5 +1,6 @@
 const fs = require('fs');
 var gpio = require('rpi-gpio');
+var gpiop = gpio.promise;
 const moment = require('moment');
 
 
@@ -14,17 +15,28 @@ module.exports = {
     getTimestamp: function () {
         return timestamp;
     },
-    setMachineStatus: function () {
-        gpio.setup(17, gpio.DIR_OUT, function (err) {
-            if (err) throw err;
-            gpio.write(17, true, function(err) {
-                if (err) throw err;
-                console.log('Written to pin');
-            });
-        });
+    setMachineStatus: function (_callback) {
+        writeGpioTrue(17).then(() => {
+            machineEnabled = !machineEnabled;
+            setTimestamp();
+            _callback();
+        })
+        .catch((err) => {
+            console.log('Error: ', err.toString())
+        })
     },
 };
 
 function setTimestamp() {
     timestamp = moment.now();
+}
+
+function writeGpioTrue(gpioNr) {
+    gpiop.setup(gpioNr, gpio.DIR_OUT)
+        .then(() => {
+            return gpiop.write(gpioNr, true)
+        })
+        .catch((err) => {
+            console.log('Error: ', err.toString())
+        })
 }
