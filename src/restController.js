@@ -1,5 +1,6 @@
 //lokale skripte
 var machineStatus = require('./machine-status');
+var brewCoffee = require('./brew-coffee');
 
 
 module.exports = {
@@ -24,6 +25,12 @@ module.exports = {
             res.json({
                 machineEnabled: machineStatus.getMachineStatus(),
                 timestamp: machineStatus.getTimestamp()
+            });
+        });
+
+        router.post('/startBrewing', function(req, res) {
+            res.json({
+                request: req
             });
         });
     }
