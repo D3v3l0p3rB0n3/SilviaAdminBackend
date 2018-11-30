@@ -10,7 +10,7 @@ var timestamp;
 
 module.exports = {
     getMachineStatus: function () {
-        return machineEnabled;
+        return getMachineStatus();
     },
     getTimestamp: function () {
         return timestamp;
@@ -36,4 +36,7 @@ function setTimestamp() {
 
 function setMachineStatus(value) {
     machineEnabled = value;
+}
+function getMachineStatus() {
+    return machineEnabled;
 }
