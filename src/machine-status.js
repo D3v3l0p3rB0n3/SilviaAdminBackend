@@ -1,6 +1,7 @@
 const fs = require('fs');
 const moment = require('moment');
 const Gpio = require('onoff').Gpio; // Gpio class
+const gpio17 = new Gpio(17, 'out');
 
 
 var machineEnabled = false;
@@ -14,8 +15,10 @@ module.exports = {
     getTimestamp: function () {
         return timestamp;
     },
-    setMachineStatus: function (_callback) {
-        console.log('Gpio functionality accessible on this computer?', Gpio.accessible);
+    setMachineStatus: function () {
+        gpio17.writeSync(1);
+        machineEnabled = !machineEnabled;
+        setTimestamp();
     }
 };
 
