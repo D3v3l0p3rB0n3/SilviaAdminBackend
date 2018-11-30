@@ -29,7 +29,7 @@ module.exports = {
         });
 
         router.post('/startBrewing', function(req, res) {
-            console.log(req);
+            console.log(req.body);
             res.send('funktioniert');
         });
     }
