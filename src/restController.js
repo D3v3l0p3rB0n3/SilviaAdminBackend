@@ -29,9 +29,8 @@ module.exports = {
         });
 
         router.post('/startBrewing', function(req, res) {
-            res.json({
-                request: req
-            });
+            console.log(req);
+            res.send('funktioniert');
         });
     }
 };
