@@ -17,11 +17,23 @@ module.exports = {
     },
     setMachineStatus: function () {
         gpio17.writeSync(1);
-        machineEnabled = !machineEnabled;
-        setTimestamp();
+        setInterval(()=> {
+            gpio17.writeSync(0);
+        }, 100);
+        if (getMachineStatus()) {
+            setMachineStatus(false);
+            timestamp = null;
+        } else {
+            setMachineStatus(true);
+            setTimestamp();
+        }
     }
 };
 
 function setTimestamp() {
     timestamp = moment.now();
+}
+
+function setMachineStatus(value) {
+    machineEnabled = value;
 }
