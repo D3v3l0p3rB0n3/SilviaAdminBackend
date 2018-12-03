@@ -21,7 +21,7 @@ var router = express.Router();              // get an instance of the express Ro
 app.use(cors());
 // rest interfaces are implemented here
 restController.initializeController(router);
-app.use('/coffeemachine', router);
+app.use('/', router);
 app.listen(port, function () {
     console.log('Server started on port ', port);
 });
