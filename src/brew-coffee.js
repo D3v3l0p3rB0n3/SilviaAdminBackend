@@ -11,7 +11,7 @@ module.exports = {
             setInterval(()=> {
                 gpio23.writeSync(0);
                 gpio24.writeSync(0);
-            }, 5000);
+            }, 33000);
         }
     }
 };
