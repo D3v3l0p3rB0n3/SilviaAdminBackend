@@ -1,7 +1,6 @@
 const moment = require('moment');
 const Gpio = require('onoff').Gpio; // Gpio class
-const gpio17 = new Gpio(17, 'out');
-
+const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
 
 var machineEnabled = false;
 var timestamp;
