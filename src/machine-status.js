@@ -17,7 +17,7 @@ module.exports = {
         gpio17.writeSync(1);
         setInterval(()=> {
             gpio17.writeSync(0);
-        }, 100);
+        }, 500);
         if (getMachineStatus()) {
             setMachineStatus(false);
             timestamp = null;
