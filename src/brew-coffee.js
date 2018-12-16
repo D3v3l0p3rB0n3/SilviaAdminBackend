@@ -15,8 +15,7 @@ module.exports = {
         }
     },
     cancelBrewing: function () {
-            gpio23.writeSync(0);
-            gpio24.writeSync(0);
-        }
+        gpio23.writeSync(0);
+        gpio24.writeSync(0);
     }
 };
