@@ -29,10 +29,8 @@ module.exports = {
         });
 
         router.post('/startBrewing', function(req, res) {
-            console.log(req.body);
-            brewCoffee.startBrewing(req.body.brewTime, function () {
-                res.send();
-            });
+            brewCoffee.startBrewing(req.body.brewTime);
+            res.send();
         });
     }
 };
