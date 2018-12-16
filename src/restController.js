@@ -30,8 +30,9 @@ module.exports = {
 
         router.post('/startBrewing', function(req, res) {
             console.log(req.body);
-            // brewCoffee.startBrewing();
-            res.send('funktioniert');
+            brewCoffee.startBrewing(req.body.brewTime, function () {
+                res.send();
+            });
         });
     }
 };
