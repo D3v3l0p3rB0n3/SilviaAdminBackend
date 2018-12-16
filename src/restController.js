@@ -32,5 +32,10 @@ module.exports = {
             brewCoffee.startBrewing(req.body.brewTime);
             res.send();
         });
+
+        router.post('/cancelBrewing', function(req, res) {
+            brewCoffee.cancelBrewing();
+            res.send();
+        });
     }
 };

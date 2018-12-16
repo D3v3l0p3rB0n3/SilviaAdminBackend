@@ -5,14 +5,18 @@ const gpio24 = new Gpio(24, 'out'); // Set GPIO_NR for relais to start and stop 
 
 module.exports = {
     startBrewing: function (brewTime) {
-
         if (machineStatus.getMachineStatus()){
-            // gpio23.writeSync(1);
-            // gpio24.writeSync(1);
+            gpio23.writeSync(1);
+            gpio24.writeSync(1);
             setTimeout(()=> {
-                // gpio23.writeSync(0);
-                // gpio24.writeSync(0);
+                gpio23.writeSync(0);
+                gpio24.writeSync(0);
             }, brewTime * 1000);
+        }
+    },
+    cancelBrewing: function () {
+            gpio23.writeSync(0);
+            gpio24.writeSync(0);
         }
     }
 };
