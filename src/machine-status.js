@@ -15,7 +15,7 @@ module.exports = {
     },
     setMachineStatus: function () {
         gpio17.writeSync(1);
-        setInterval(()=> {
+        setTimeout(()=> {
             gpio17.writeSync(0);
         }, 500);
         if (getMachineStatus()) {

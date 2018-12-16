@@ -30,7 +30,7 @@ module.exports = {
 
         router.post('/startBrewing', function(req, res) {
             console.log(req.body);
-            brewCoffee.startBrewing();
+            // brewCoffee.startBrewing();
             res.send('funktioniert');
         });
     }

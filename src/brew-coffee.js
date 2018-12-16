@@ -8,7 +8,7 @@ module.exports = {
         if (machineStatus.getMachineStatus()){
             gpio23.writeSync(1);
             gpio24.writeSync(1);
-            setInterval(()=> {
+            setTimeout(()=> {
                 gpio23.writeSync(0);
                 gpio24.writeSync(0);
             }, 33000);
