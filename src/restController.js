@@ -1,6 +1,7 @@
 //lokale skripte
 var machineStatus = require('./machine-status');
 var brewCoffee = require('./brew-coffee');
+var machineMaintenance = require('./machine-maintenance');
 
 
 module.exports = {
@@ -37,5 +38,11 @@ module.exports = {
             brewCoffee.cancelBrewing();
             res.send();
         });
+
+        router.post('/backFlush', function(req, res) {
+            machineMaintenance.startBackflush();
+            res.send();
+        });
+
     }
 };
