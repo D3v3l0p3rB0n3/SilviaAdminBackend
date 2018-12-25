@@ -1,3 +1,4 @@
+const moment = require('moment');
 const Gpio = require('onoff').Gpio; // Gpio class
 var machineStatus = require('./machine-status');
 const gpio23 = new Gpio(23, 'out'); // Set GPIO_NR for relais to start and stop the brewing
@@ -7,7 +8,6 @@ var flushingStillRunning;
 
 module.exports = {
     startBackflush: function () {
-        console.log('startBackflush');
         if (machineStatus.getMachineStatus()){
             flushingStillRunning = true;
             startFlushing(10);
@@ -41,7 +41,7 @@ async function startFlushing(time) {
     if (flushingStillRunning) {
         /*gpio23.writeSync(1);
         gpio24.writeSync(1);*/
-        console.log('Write 1');
+        console.log(moment.now(), 'Write 1');
         await sleep(time * 1000);
     }
 }
@@ -50,7 +50,7 @@ async function stoppFlushing(time) {
     if (flushingStillRunning) {
         /*gpio23.writeSync(0);
         gpio24.writeSync(0);*/
-        console.log('Write 0');
+        console.log(moment.now(), 'Write 0');
         await sleep(time * 1000);
     }
 }
