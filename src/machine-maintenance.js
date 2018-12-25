@@ -8,7 +8,6 @@ var flushingStillRunning;
 module.exports = {
     startBackflush: function () {
         if (machineStatus.getMachineStatus()){
-            flushingStillRunning = true;
             startFlushing(10);
             stoppFlushing(30);
             startFlushing(10);
@@ -25,7 +24,6 @@ module.exports = {
             stoppFlushing(10);
             startFlushing(10);
             stoppFlushing(1);
-            flushingStillRunning = false;
 
         }
     },
@@ -37,19 +35,15 @@ module.exports = {
 };
 
 async function startFlushing(time) {
-    if (flushingStillRunning) {
         gpio23.writeSync(1);
         gpio24.writeSync(1);
         await sleep(time * 1000);
-    }
 }
 
 async function stoppFlushing(time) {
-    if (flushingStillRunning) {
         gpio23.writeSync(0);
         gpio24.writeSync(0);
         await sleep(time * 1000);
-    }
 }
 
 function sleep(ms) {
