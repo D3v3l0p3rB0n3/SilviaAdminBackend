@@ -9,53 +9,24 @@ module.exports = {
     startBackflush: function () {
         if (machineStatus.getMachineStatus()){
             flushingStillRunning = true;
-            startFlushing();
-            setTimeout(() => {
-                stoppFlushing();
-                setTimeout(() => {
-                    startFlushing();
-                    setTimeout(() => {
-                        stoppFlushing();
-                        setTimeout(() => {
-                            startFlushing();
-                            setTimeout(() => {
-                                stoppFlushing();
-                                setTimeout(() => {
-                                    startFlushing();
-                                    setTimeout(() => {
-                                        stoppFlushing();
-                                        setTimeout(() => {
-                                            startFlushing();
-                                            setTimeout(() => {
-                                                stoppFlushing();
-                                                setTimeout(() => {
-                                                    startFlushing();
-                                                    setTimeout(() => {
-                                                        stoppFlushing();
-                                                        setTimeout(() => {
-                                                            startFlushing();
-                                                            setTimeout(() => {
-                                                                stoppFlushing();
-                                                                setTimeout(() => {
-                                                                    startFlushing();
-                                                                    setTimeout(() => {
-                                                                        stoppFlushing();
-                                                                    }, 10 * 1000);
-                                                                }, 10 * 1000);
-                                                            }, 10 * 1000);
-                                                        }, 10 * 1000);
-                                                    }, 10 * 1000);
-                                                }, 10 * 1000);
-                                            }, 10 * 1000);
-                                        }, 10 * 1000);
-                                    }, 10 * 1000);
-                                }, 10 * 1000);
-                            }, 10 * 1000);
-                        }, 10 * 1000);
-                    }, 10 * 1000);
-                }, 30 * 1000);
-            }, 10 * 1000);
+            startFlushing(10);
+            stoppFlushing(30);
+            startFlushing(10);
+            stoppFlushing(10);
+            startFlushing(10);
+            stoppFlushing(10);
+            startFlushing(10);
+            stoppFlushing(10);
+            startFlushing(10);
+            stoppFlushing(10);
+            startFlushing(10);
+            stoppFlushing(10);
+            startFlushing(10);
+            stoppFlushing(10);
+            startFlushing(10);
+            stoppFlushing(1);
             flushingStillRunning = false;
+
         }
     },
     cancelBackflush: function () {
@@ -65,16 +36,24 @@ module.exports = {
     }
 };
 
-function startFlushing() {
+async function startFlushing(time) {
     if (flushingStillRunning) {
-        gpio23.writeSync(1);
-        gpio24.writeSync(1);
+        /*gpio23.writeSync(1);
+        gpio24.writeSync(1);*/
+        console.log('Write 1');
+        await sleep(time * 1000);
     }
 }
 
-function stoppFlushing() {
+async function stoppFlushing(time) {
     if (flushingStillRunning) {
-        gpio23.writeSync(0);
-        gpio24.writeSync(0);
+        /*gpio23.writeSync(0);
+        gpio24.writeSync(0);*/
+        console.log('Write 0');
+        await sleep(time * 1000);
     }
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
