@@ -44,5 +44,10 @@ module.exports = {
             res.send();
         });
 
+        router.post('/cancelBackFlush', function(req, res) {
+            machineMaintenance.cancelBackflush();
+            res.send();
+        });
+
     }
 };
