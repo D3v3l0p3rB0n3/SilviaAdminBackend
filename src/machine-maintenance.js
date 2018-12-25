@@ -7,6 +7,7 @@ var flushingStillRunning;
 
 module.exports = {
     startBackflush: function () {
+        console.log('startBackflush');
         if (machineStatus.getMachineStatus()){
             flushingStillRunning = true;
             startFlushing(10);
