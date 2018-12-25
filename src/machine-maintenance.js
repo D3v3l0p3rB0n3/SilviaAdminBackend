@@ -39,18 +39,16 @@ module.exports = {
 
 async function startFlushing(time) {
     if (flushingStillRunning) {
-        /*gpio23.writeSync(1);
-        gpio24.writeSync(1);*/
-        console.log(moment.now(), 'Write 1');
+        gpio23.writeSync(1);
+        gpio24.writeSync(1);
         await sleep(time * 1000);
     }
 }
 
 async function stoppFlushing(time) {
     if (flushingStillRunning) {
-        /*gpio23.writeSync(0);
-        gpio24.writeSync(0);*/
-        console.log(moment.now(), 'Write 0');
+        gpio23.writeSync(0);
+        gpio24.writeSync(0);
         await sleep(time * 1000);
     }
 }
