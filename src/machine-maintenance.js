@@ -9,25 +9,7 @@ var flushingStillRunning;
 module.exports = {
     startBackflush: function () {
         if (machineStatus.getMachineStatus()){
-            flushingStillRunning = true;
-            startFlushing(10);
-            stoppFlushing(30);
-            startFlushing(10);
-            stoppFlushing(10);
-            startFlushing(10);
-            stoppFlushing(10);
-            startFlushing(10);
-            stoppFlushing(10);
-            startFlushing(10);
-            stoppFlushing(10);
-            startFlushing(10);
-            stoppFlushing(10);
-            startFlushing(10);
-            stoppFlushing(10);
-            startFlushing(10);
-            stoppFlushing(1);
-            flushingStillRunning = false;
-
+            startFlushing();
         }
     },
     cancelBackflush: function () {
@@ -37,22 +19,54 @@ module.exports = {
     }
 };
 
-async function startFlushing(time) {
+async function startFlushing() {
+    flushingStillRunning = true;
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(30 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(10 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(10 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(10 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(10 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(10 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    await sleep(10 * 1000);
+    startWater();
+    await sleep(10 * 1000);
+    stopWater();
+    flushingStillRunning = false;
+}
+
+function startWater() {
     if (flushingStillRunning) {
         gpio23.writeSync(1);
         gpio24.writeSync(1);
-        await sleep(time * 1000);
     }
 }
-
-async function stoppFlushing(time) {
+function stopWater() {
     if (flushingStillRunning) {
         gpio23.writeSync(0);
         gpio24.writeSync(0);
-        await sleep(time * 1000);
     }
 }
-
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
