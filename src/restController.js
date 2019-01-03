@@ -14,7 +14,8 @@ module.exports = {
         router.get('/machineStatus', function(req, res) {
             res.json({
                 machineEnabled: machineStatus.getMachineStatus(),
-                timestamp: machineStatus.getTimestamp()
+                timestamp: machineStatus.getTimestamp(),
+                autoKeepOn: machineStatus.getAutoKeepOn()
             });
         });
         /**
@@ -23,6 +24,9 @@ module.exports = {
          */
         router.post('/machineStatus', function(req, res) {
             machineStatus.setMachineStatus();
+            if(req.body.autoKeepOn){
+                machineStatus.setAutoKeepOn();
+            }
             res.json({
                 machineEnabled: machineStatus.getMachineStatus(),
                 timestamp: machineStatus.getTimestamp()
