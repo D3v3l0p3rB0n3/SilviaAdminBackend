@@ -1,8 +1,8 @@
 const moment = require('moment');
 const Gpio = require('onoff').Gpio; // Gpio class
 const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
+const gpio18 = new Gpio(18, 'in');
 
-var machineEnabled = false;
 var autoKeepOn = false;
 var autoKeepIntervallID;
 var timestamp;
@@ -35,10 +35,8 @@ function setMachineStatus() {
         gpio17.writeSync(0);
     }, 500);
     if (getMachineStatus()) {
-        machineEnabled = false;
         timestamp = null;
     } else {
-        machineEnabled = true;
         setTimestamp();
     }
 }
@@ -59,10 +57,10 @@ function setAutoKeepOn() {
     autoKeepOn = !autoKeepOn;
 }
 function getMachineStatus() {
-    return machineEnabled;
+    return gpio18.readSync();
 }
 async function restartMachine() {
-    if(machineEnabled) {
+    if(getMachineStatus()) {
         setMachineStatus();
         await sleep(7000);
         setMachineStatus();
