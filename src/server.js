@@ -15,7 +15,7 @@ const sockjs_opts = {
 
 const sockjs_echo = sockjs.createServer(sockjs_opts);
 sockjs_echo.on('connection', conn => {
-    conn.on('data', msg => conn.write(msg));
+    conn.on('data', msg => conn.write(msg + 'test'));
 });
 
 // configure app to use bodyParser()
