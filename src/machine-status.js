@@ -1,7 +1,7 @@
 const moment = require('moment');
 const Gpio = require('onoff').Gpio; // Gpio class
 const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
-const gpio18 = new Gpio(18, 'in');
+const gpio18 = new Gpio(18, 'in', 'both');
 
 var machineStatus = gpio18.readSync();
 var timestamp;
@@ -20,8 +20,6 @@ module.exports = {
     setMachineWatch: function () {
         gpio18.watch((err, value) => {
             machineStatus = value;
-            console.log('value', value);
-            console.log('err', err);
             if(machineStatus){ //<- machine was turned on
                 setTimestamp();
             } else { //<- machine was turned off
