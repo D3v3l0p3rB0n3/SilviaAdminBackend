@@ -17,10 +17,9 @@ module.exports = {
     setMachineStatus: function () {
         setMachineStatus();
     },
-    setMachineWatch: function (sockjs_client) {
+    setMachineWatch: function () {
         gpio18.watch((err, value) => {
             machineStatus = value;
-            sockjs_client.send(value);
             if(machineStatus){ //<- machine was turned on
                 setTimestamp();
             } else { //<- machine was turned off
