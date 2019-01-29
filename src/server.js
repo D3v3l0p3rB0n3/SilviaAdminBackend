@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 
 //lokale skripte
 var restController = require('./restController');
+var machineStatus = require('./machine-status');
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -21,6 +22,7 @@ var router = express.Router();              // get an instance of the express Ro
 app.use(cors());
 // rest interfaces are implemented here
 restController.initializeController(router);
+machineStatus.setMachineWatch();
 app.use('/', router);
 app.listen(port, function () {
     console.log('Server started on port ', port);
