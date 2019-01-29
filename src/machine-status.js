@@ -20,7 +20,8 @@ module.exports = {
     setMachineWatch: function () {
         gpio18.watch((err, value) => {
             machineStatus = value;
-            console.log(value);
+            console.log('value', value);
+            console.log('err', err);
             if(machineStatus){ //<- machine was turned on
                 setTimestamp();
             } else { //<- machine was turned off
