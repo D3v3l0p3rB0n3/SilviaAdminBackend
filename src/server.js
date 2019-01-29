@@ -33,11 +33,11 @@ const router = express.Router();              // get an instance of the express 
 app.use(cors());
 // rest interfaces are implemented here
 restController.initializeController(router);
-machineStatus.setMachineWatch();
 app.use('/', router);
 
 const server = http.createServer(app);
 sockjs_echo.installHandlers(server);
+machineStatus.setMachineWatch(sockjs_echo);
 
 server.listen(port, '0.0.0.0', () => {
     console.log(' [*] Listening on 0.0.0.0:' + port);
