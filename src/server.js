@@ -1,22 +1,33 @@
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
-var cors = require('cors')
-var bodyParser = require('body-parser');
+const express    = require('express');        // call express
+const http = require('http');
+const app        = express();                 // define our app using express
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const sockjs = require('sockjs');
 
 //lokale skripte
-var restController = require('./restController');
-var machineStatus = require('./machine-status');
+const restController = require('./restController');
+const machineStatus = require('./machine-status');
+
+const sockjs_opts = {
+    prefix: '/echo'
+};
+
+const sockjs_echo = sockjs.createServer(sockjs_opts);
+sockjs_echo.on('connection', conn => {
+    conn.on('data', msg => conn.write(msg));
+});
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8081;        // set our port
+const port = process.env.PORT || 8081;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
-var router = express.Router();              // get an instance of the express Router
+const router = express.Router();              // get an instance of the express Router
 
 // set cors header
 app.use(cors());
@@ -24,6 +35,10 @@ app.use(cors());
 restController.initializeController(router);
 machineStatus.setMachineWatch();
 app.use('/', router);
-app.listen(port, function () {
-    console.log('Server started on port ', port);
+
+const server = http.createServer(app);
+sockjs_echo.installHandlers(server);
+
+server.listen(port, '0.0.0.0', () => {
+    console.log(' [*] Listening on 0.0.0.0:' + port);
 });
