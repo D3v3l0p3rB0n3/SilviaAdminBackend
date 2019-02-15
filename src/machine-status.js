@@ -21,12 +21,14 @@ module.exports = {
         let timeoutID;
         sockjs_echo.on('connection', conn => {
             gpio18.watch((err, value) => {
-                machineStatus = value;
-                if(machineStatus){ //<- machine was turned on
+                if(!machineStatus && value){ //<- machine was turned on
+                    machineStatus = value;
                     setTimestamp();
                     conn.write('Kaffeemaschine an!');
                     clearInterval(timeoutID);
-                } else { //<- machine was turned off
+                }
+                if(machineStatus && !value) { //<- machine was turned off
+                    machineStatus = value;
                     conn.write('Kaffeemaschine aus!');
                     timeoutID = setTimeout(()=> {
                         timestamp = null;
