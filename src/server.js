@@ -10,7 +10,7 @@ const restController = require('./restController');
 const machineStatus = require('./machine-status');
 
 const sockjs_opts = {
-    prefix: '/echo'
+    prefix: '/machineStatus'
 };
 
 const sockjs_echo = sockjs.createServer(sockjs_opts);
