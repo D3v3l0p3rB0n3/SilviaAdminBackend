@@ -27,8 +27,8 @@ module.exports = {
                     conn.write('Kaffeemaschine an!');
                     clearInterval(timeoutID);
                 } else { //<- machine was turned off
+                    conn.write('Kaffeemaschine aus!');
                     timeoutID = setTimeout(()=> {
-                        conn.write('Kaffeemaschine aus!');
                         timestamp = null;
                     }, 1000 * 60 * 5);
                 }
