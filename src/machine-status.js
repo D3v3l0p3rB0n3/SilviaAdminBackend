@@ -5,6 +5,7 @@ const gpio18 = new Gpio(18, 'in', 'both');
 
 var machineStatus = gpio18.readSync();
 var timestamp;
+var sockJSConnection;
 
 
 module.exports = {
@@ -17,26 +18,30 @@ module.exports = {
     setMachineStatus: function () {
         setMachineStatus();
     },
-    setMachineWatch: function (sockjs_echo) {
+    setMachineWatch: function () {
         let timeoutID;
-        sockjs_echo.on('connection', conn => {
             gpio18.watch((err, value) => {
                 if(!machineStatus && value){ //<- machine was turned on
                     machineStatus = value;
                     setTimestamp();
-                    conn.write('Kaffeemaschine an!');
+                    if(sockJSConnection) {
+                        sockJSConnection.write('Kaffeemaschine an!');
+                    }
                     clearInterval(timeoutID);
                 }
                 if(machineStatus && !value) { //<- machine was turned off
                     machineStatus = value;
-                    conn.write('Kaffeemaschine aus!');
+                    if(sockJSConnection) {
+                        sockJSConnection.write('Kaffeemaschine aus!');
+                    }
                     timeoutID = setTimeout(()=> {
                         timestamp = null;
                     }, 1000 * 60 * 5);
                 }
             });
-        });
-
+    },
+    setConnection: function (conn) {
+        sockJSConnection = conn;
     }
 };
 

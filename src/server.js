@@ -15,6 +15,10 @@ const sockjs_opts = {
 
 const sockjs_echo = sockjs.createServer(sockjs_opts);
 
+sockjs_echo.on('connection', conn => {
+    machineStatus.setConnection(conn);
+});
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,7 +38,7 @@ app.use('/', router);
 
 const server = http.createServer(app);
 sockjs_echo.installHandlers(server);
-machineStatus.setMachineWatch(sockjs_echo);
+machineStatus.setMachineWatch();
 
 server.listen(port, '0.0.0.0', () => {
     console.log(' [*] Listening on 0.0.0.0:' + port);
