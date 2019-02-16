@@ -16,7 +16,15 @@ const sockjs_opts = {
 const sockjs_echo = sockjs.createServer(sockjs_opts);
 
 sockjs_echo.on('connection', conn => {
+    conn.write({
+        machineEnabled: machineStatus.getMachineStatus(),
+        timestamp: machineStatus.getTimestamp()
+    });
     machineStatus.setConnection(conn);
+    conn.on('close', function() {
+        console.log('Connection was closed');
+        machineStatus.setConnection(null);
+    });
 });
 
 // configure app to use bodyParser()

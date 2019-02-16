@@ -19,24 +19,26 @@ module.exports = {
         setMachineStatus();
     },
     setMachineWatch: function () {
-        let timeoutID;
             gpio18.watch((err, value) => {
                 if(!machineStatus && value){ //<- machine was turned on
                     machineStatus = value;
                     setTimestamp();
                     if(sockJSConnection) {
-                        sockJSConnection.write('Kaffeemaschine an!');
+                        sockJSConnection.write({
+                            machineEnabled: machineStatus,
+                            timestamp: timestamp
+                        });
                     }
-                    clearInterval(timeoutID);
                 }
                 if(machineStatus && !value) { //<- machine was turned off
                     machineStatus = value;
+                    timestamp = null;
                     if(sockJSConnection) {
-                        sockJSConnection.write('Kaffeemaschine aus!');
+                        sockJSConnection.write({
+                            machineEnabled: machineStatus,
+                            timestamp: timestamp
+                        });
                     }
-                    timeoutID = setTimeout(()=> {
-                        timestamp = null;
-                    }, 1000 * 60 * 5);
                 }
             });
     },
