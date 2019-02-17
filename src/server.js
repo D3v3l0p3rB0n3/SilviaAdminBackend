@@ -16,10 +16,10 @@ const sockjs_opts = {
 const sockjs_echo = sockjs.createServer(sockjs_opts);
 
 sockjs_echo.on('connection', conn => {
-    conn.write({
+    conn.write(JSON.stringify({
         machineEnabled: machineStatus.getMachineStatus(),
         timestamp: machineStatus.getTimestamp()
-    });
+    }));
     machineStatus.setConnection(conn);
     conn.on('close', function() {
         console.log('Connection was closed');

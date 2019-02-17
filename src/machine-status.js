@@ -24,20 +24,20 @@ module.exports = {
                     machineStatus = value;
                     setTimestamp();
                     if(sockJSConnection) {
-                        sockJSConnection.write({
+                        sockJSConnection.write(JSON.stringify({
                             machineEnabled: machineStatus,
                             timestamp: timestamp
-                        });
+                        }));
                     }
                 }
                 if(machineStatus && !value) { //<- machine was turned off
                     machineStatus = value;
                     timestamp = null;
                     if(sockJSConnection) {
-                        sockJSConnection.write({
+                        sockJSConnection.write(JSON.stringify({
                             machineEnabled: machineStatus,
                             timestamp: timestamp
-                        });
+                        }));
                     }
                 }
             });
