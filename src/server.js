@@ -20,9 +20,10 @@ sockjs_echo.on('connection', conn => {
         machineEnabled: machineStatus.getMachineStatus(),
         timestamp: machineStatus.getTimestamp()
     }));
+    console.log('Connection was opened', conn);
     machineStatus.setConnection(conn);
     conn.on('close', function() {
-        console.log('Connection was closed');
+        console.log('Connection was closed', conn);
         machineStatus.setConnection(null);
     });
 });
