@@ -5,7 +5,7 @@ const gpio18 = new Gpio(18, 'in', 'both');
 
 var machineStatus = gpio18.readSync();
 var timestamp;
-var sockJSConnection;
+var sockJSConnection = [];
 
 
 module.exports = {
@@ -43,7 +43,25 @@ module.exports = {
             });
     },
     setConnection: function (conn) {
-        sockJSConnection = conn;
+        sockJSConnection.push(conn);
+        console.log('connection opened', conn.id);
+        for (let connection of sockJSConnection) {
+            console.log('NewConnections after open', connection.id);
+        }
+    },
+    closeConnection: function (conn) {
+        const newConnectionArray = [];
+        for (let connIndex in sockJSConnection){
+           if(sockJSConnection[connIndex].id !== conn.id) {
+               newConnectionArray.push(sockJSConnection[connIndex]);
+           }
+        }
+        sockJSConnection = newConnectionArray;
+
+        console.log('connection closed', conn.id);
+        for (let connection of sockJSConnection) {
+            console.log('NewConnections after close', connection.id);
+        }
     }
 };
 
