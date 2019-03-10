@@ -23,21 +23,25 @@ module.exports = {
                 if(!machineStatus && value){ //<- machine was turned on
                     machineStatus = value;
                     setTimestamp();
-                    if(sockJSConnection) {
-                        sockJSConnection.write(JSON.stringify({
-                            machineEnabled: machineStatus,
-                            timestamp: timestamp
-                        }));
+                    if(sockJSConnection && sockJSConnection.length > 0) {
+                        for (let connection of sockJSConnection) {
+                            connection.write(JSON.stringify({
+                                machineEnabled: machineStatus,
+                                timestamp: timestamp
+                            }));
+                        }
                     }
                 }
                 if(machineStatus && !value) { //<- machine was turned off
                     machineStatus = value;
                     timestamp = null;
-                    if(sockJSConnection) {
-                        sockJSConnection.write(JSON.stringify({
-                            machineEnabled: machineStatus,
-                            timestamp: timestamp
-                        }));
+                    if(sockJSConnection && sockJSConnection.length > 0) {
+                        for (let connection of sockJSConnection) {
+                            connection.write(JSON.stringify({
+                                machineEnabled: machineStatus,
+                                timestamp: timestamp
+                            }));
+                        }
                     }
                 }
             });
@@ -45,11 +49,9 @@ module.exports = {
     setConnection: function (conn) {
         sockJSConnection.push(conn);
         console.log('connection opened', conn.id);
-        for (let connection of sockJSConnection) {
-            console.log('NewConnections after open', connection.id);
-        }
     },
     closeConnection: function (conn) {
+        console.log('connection closed', conn.id);
         const newConnectionArray = [];
         for (let connIndex in sockJSConnection){
            if(sockJSConnection[connIndex].id !== conn.id) {
@@ -57,11 +59,6 @@ module.exports = {
            }
         }
         sockJSConnection = newConnectionArray;
-
-        console.log('connection closed', conn.id);
-        for (let connection of sockJSConnection) {
-            console.log('NewConnections after close', connection.id);
-        }
     }
 };
 
