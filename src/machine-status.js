@@ -20,9 +20,11 @@ module.exports = {
     },
     setMachineWatch: function () {
             gpio18.watch((err, value) => {
+                console.log('Watch getriggert', value);
                 if(!machineStatus && value){ //<- machine was turned on
                     machineStatus = value;
                     setTimestamp();
+                    console.log('Machine turned on', value);
                     if(sockJSConnection && sockJSConnection.length > 0) {
                         for (let connection of sockJSConnection) {
                             connection.write(JSON.stringify({
@@ -35,6 +37,7 @@ module.exports = {
                 if(machineStatus && !value) { //<- machine was turned off
                     machineStatus = value;
                     timestamp = null;
+                    console.log('Machine turned off', value);
                     if(sockJSConnection && sockJSConnection.length > 0) {
                         for (let connection of sockJSConnection) {
                             connection.write(JSON.stringify({
