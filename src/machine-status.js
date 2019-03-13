@@ -24,7 +24,8 @@ module.exports = {
         fs.watch(machineStatusFile, function (event, filename) {
             console.log('event is: ' + event);
             if (filename) {
-                console.log('filename provided: ' + filename);
+                var contents = fs.readFileSync(machineStatusFile, 'utf8');
+                console.log('Content from fs', contents);
             } else {
                 console.log('filename not provided');
             }
