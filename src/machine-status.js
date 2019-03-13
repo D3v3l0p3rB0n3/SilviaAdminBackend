@@ -21,8 +21,13 @@ module.exports = {
         setMachineStatus();
     },
     setMachineWatch: function () {
-        fs.watchFile(machineStatusFile, (curr, prev) => {
-            console.log(`${machineStatusFile} file Changed`, curr, prev);
+        fs.watch(machineStatusFile, function (event, filename) {
+            console.log('event is: ' + event);
+            if (filename) {
+                console.log('filename provided: ' + filename);
+            } else {
+                console.log('filename not provided');
+            }
         });
         gpio18.watch((err, value) => {
             console.log('Watch getriggert', value);
