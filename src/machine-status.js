@@ -1,7 +1,9 @@
 const moment = require('moment');
+const fs = require('fs');
 const Gpio = require('onoff').Gpio; // Gpio class
 const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
 const gpio18 = new Gpio(18, 'in', 'both');
+const machineStatusFile = '/sys/class/gpio/gpio18/value';
 
 var machineStatus = gpio18.readSync();
 var timestamp;
@@ -19,35 +21,38 @@ module.exports = {
         setMachineStatus();
     },
     setMachineWatch: function () {
-            gpio18.watch((err, value) => {
-                console.log('Watch getriggert', value);
-                if(!machineStatus && value){ //<- machine was turned on
-                    machineStatus = value;
-                    setTimestamp();
-                    console.log('Machine turned on', value);
-                    if(sockJSConnection && sockJSConnection.length > 0) {
-                        for (let connection of sockJSConnection) {
-                            connection.write(JSON.stringify({
-                                machineEnabled: machineStatus,
-                                timestamp: timestamp
-                            }));
-                        }
+        fs.watchFile(machineStatusFile, (curr, prev) => {
+            console.log(`${machineStatusFile} file Changed`, curr, prev);
+        });
+        gpio18.watch((err, value) => {
+            console.log('Watch getriggert', value);
+            if(!machineStatus && value){ //<- machine was turned on
+                machineStatus = value;
+                setTimestamp();
+                console.log('Machine turned on', value);
+                if(sockJSConnection && sockJSConnection.length > 0) {
+                    for (let connection of sockJSConnection) {
+                        connection.write(JSON.stringify({
+                            machineEnabled: machineStatus,
+                            timestamp: timestamp
+                        }));
                     }
                 }
-                if(machineStatus && !value) { //<- machine was turned off
-                    machineStatus = value;
-                    timestamp = null;
-                    console.log('Machine turned off', value);
-                    if(sockJSConnection && sockJSConnection.length > 0) {
-                        for (let connection of sockJSConnection) {
-                            connection.write(JSON.stringify({
-                                machineEnabled: machineStatus,
-                                timestamp: timestamp
-                            }));
-                        }
+            }
+            if(machineStatus && !value) { //<- machine was turned off
+                machineStatus = value;
+                timestamp = null;
+                console.log('Machine turned off', value);
+                if(sockJSConnection && sockJSConnection.length > 0) {
+                    for (let connection of sockJSConnection) {
+                        connection.write(JSON.stringify({
+                            machineEnabled: machineStatus,
+                            timestamp: timestamp
+                        }));
                     }
                 }
-            });
+            }
+        });
     },
     setConnection: function (conn) {
         sockJSConnection.push(conn);
