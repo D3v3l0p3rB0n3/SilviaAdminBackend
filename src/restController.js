@@ -30,10 +30,14 @@ module.exports = {
             res.send();
         });
 
-        router.put('/cancelBackFlush', function(req, res) {
-            machineMaintenance.cancelBackflush();
+        router.put('/cancelMaintenance', function(req, res) {
+            machineMaintenance.cancelMaintenance();
             res.send();
         });
 
+        router.put('/antiLiming', function(req, res) {
+            machineMaintenance.startAntiLiming();
+            res.send();
+        });
     }
 };

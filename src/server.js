@@ -9,12 +9,13 @@ const sockjs = require('sockjs');
 const restController = require('./restController');
 const machineStatus = require('./machine-status');
 
+
+//sockets:
 const sockjs_opts = {
     prefix: '/machineStatusWebSocket'
 };
 
 const sockjs_echo = sockjs.createServer(sockjs_opts);
-
 sockjs_echo.on('connection', conn => {
     conn.write(JSON.stringify({
         machineEnabled: machineStatus.getMachineStatus(),
