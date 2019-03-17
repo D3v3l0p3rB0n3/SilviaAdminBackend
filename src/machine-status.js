@@ -6,6 +6,7 @@ const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop 
 const machineStatusFile = '/sys/class/gpio/gpio18/value';*/
 
 // var machineStatus = gpio18.readSync();
+var machineStatus = false;
 var timestamp;
 var sockJSConnection = [];
 
