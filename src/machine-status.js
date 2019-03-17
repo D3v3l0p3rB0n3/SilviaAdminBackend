@@ -2,10 +2,10 @@ const moment = require('moment');
 const fs = require('fs');
 const Gpio = require('onoff').Gpio; // Gpio class
 const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
-const gpio18 = new Gpio(18, 'in', 'both');
-const machineStatusFile = '/sys/class/gpio/gpio18/value';
+/*const gpio18 = new Gpio(18, 'in', 'both');
+const machineStatusFile = '/sys/class/gpio/gpio18/value';*/
 
-var machineStatus = gpio18.readSync();
+// var machineStatus = gpio18.readSync();
 var timestamp;
 var sockJSConnection = [];
 
@@ -19,6 +19,12 @@ module.exports = {
     },
     setMachineStatus: function () {
         setMachineStatus();
+        for (let connection of sockJSConnection) {
+            connection.write(JSON.stringify({
+                machineEnabled: machineStatus,
+                timestamp: timestamp
+            }));
+        }
     },
     setMachineWatch: function () {
         fs.watch(machineStatusFile, function (event, filename) {
@@ -84,6 +90,10 @@ function setMachineStatus() {
     setTimeout(()=> {
         gpio17.writeSync(0);
     }, 500);
+    // das hier löschen wenn watch funktion wieder aktiv:
+    machineStatus = !machineStatus;
+
+
 }
 
 function getMachineStatus() {

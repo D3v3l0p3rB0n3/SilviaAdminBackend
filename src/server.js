@@ -45,7 +45,7 @@ app.use('/', router);
 
 const server = http.createServer(app);
 sockjs_echo.installHandlers(server);
-machineStatus.setMachineWatch();
+// machineStatus.setMachineWatch();
 
 server.listen(port, '0.0.0.0', () => {
     console.log(' [*] Listening on 0.0.0.0:' + port);
