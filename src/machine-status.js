@@ -41,7 +41,7 @@ module.exports = {
             console.log('Watch getriggert', value);
             if(!machineStatus && value){ //<- machine was turned on
                 machineStatus = value;
-                setTimestamp();
+                setTimestamp(moment.now());
                 console.log('Machine turned on', value);
                 if(sockJSConnection && sockJSConnection.length > 0) {
                     for (let connection of sockJSConnection) {
@@ -54,7 +54,7 @@ module.exports = {
             }
             if(machineStatus && !value) { //<- machine was turned off
                 machineStatus = value;
-                timestamp = null;
+                setTimestamp(null;
                 console.log('Machine turned off', value);
                 if(sockJSConnection && sockJSConnection.length > 0) {
                     for (let connection of sockJSConnection) {
@@ -83,8 +83,8 @@ module.exports = {
     }
 };
 
-function setTimestamp() {
-    timestamp = moment.now();
+function setTimestamp(_timestamp) {
+    timestamp = _timestamp;
 }
 function setMachineStatus() {
     gpio17.writeSync(1);
@@ -93,6 +93,11 @@ function setMachineStatus() {
     }, 500);
     // das hier löschen wenn watch funktion wieder aktiv:
     machineStatus = !machineStatus;
+    if(!machineStatus) {
+        setTimestamp(null);
+    } else {
+        setTimestamp(moment.now());
+    }
 
 
 }
