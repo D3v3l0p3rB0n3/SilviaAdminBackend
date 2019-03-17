@@ -54,7 +54,7 @@ module.exports = {
             }
             if(machineStatus && !value) { //<- machine was turned off
                 machineStatus = value;
-                setTimestamp(null;
+                setTimestamp(null);
                 console.log('Machine turned off', value);
                 if(sockJSConnection && sockJSConnection.length > 0) {
                     for (let connection of sockJSConnection) {
