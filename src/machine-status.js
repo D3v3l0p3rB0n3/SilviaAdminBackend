@@ -20,12 +20,6 @@ module.exports = {
     },
     setMachineStatus: function () {
         setMachineStatus();
-        for (let connection of sockJSConnection) {
-            connection.write(JSON.stringify({
-                machineEnabled: machineStatus,
-                timestamp: timestamp
-            }));
-        }
     },
     setMachineWatch: function () {
         fs.watch(machineStatusFile, function (event, filename) {
@@ -37,7 +31,7 @@ module.exports = {
                 console.log('filename not provided');
             }
         });
-        gpio18.watch((err, value) => {
+        /*gpio18.watch((err, value) => {
             console.log('Watch getriggert', value);
             if(!machineStatus && value){ //<- machine was turned on
                 machineStatus = value;
@@ -65,7 +59,7 @@ module.exports = {
                     }
                 }
             }
-        });
+        });*/
     },
     setConnection: function (conn) {
         sockJSConnection.push(conn);
@@ -91,15 +85,6 @@ function setMachineStatus() {
     setTimeout(()=> {
         gpio17.writeSync(0);
     }, 500);
-    // das hier löschen wenn watch funktion wieder aktiv:
-    machineStatus = !machineStatus;
-    if(!machineStatus) {
-        setTimestamp(null);
-    } else {
-        setTimestamp(moment.now());
-    }
-
-
 }
 
 function getMachineStatus() {

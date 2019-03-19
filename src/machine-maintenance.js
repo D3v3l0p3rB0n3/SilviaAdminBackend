@@ -64,6 +64,7 @@ async function _startAntiLiming() {
     startWater();
     await sleep(45 * 1000);
     stopWater(); // ca. 1,5l left
+    await sleep(5 * 1000);
     machineStatus.setMachineStatus(); // now off
     await sleep(15 * 60 * 1000); // wait 15min
     machineStatus.setMachineStatus(); // now on
@@ -71,6 +72,7 @@ async function _startAntiLiming() {
     startWater();
     await sleep(45 * 1000);
     stopWater(); // ca. 1l left
+    await sleep(5 * 1000);
     machineStatus.setMachineStatus(); // now off
     await sleep(15 * 60 * 1000); // wait 15min
     machineStatus.setMachineStatus(); // now on
@@ -78,6 +80,7 @@ async function _startAntiLiming() {
     startWater();
     await sleep(45 * 1000);
     stopWater(); // ca. 0,5l left
+    await sleep(5 * 1000);
     machineStatus.setMachineStatus(); // now off
     await sleep(15 * 60 * 1000); // wait 15min
     machineStatus.setMachineStatus(); // now on
@@ -85,6 +88,7 @@ async function _startAntiLiming() {
     startWater();
     await sleep(40 * 1000);
     stopWater(); // tank empty now
+    await sleep(5 * 1000);
     machineStatus.setMachineStatus(); // now off
     stillRunning = false;
 }
