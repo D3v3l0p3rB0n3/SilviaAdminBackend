@@ -26,8 +26,8 @@ module.exports = {
             if (filename) {
                 var value = fs.readFileSync(machineStatusFile, 'utf8');
                 console.log('value', value, 'machineStatus', machineStatus);
-                if(machineStatus === '0' && value === '1'){ //<- machine was turned on
-                    machineStatus = value;
+                if(!machineStatus && value === '1'){ //<- machine was turned on
+                    machineStatus = true;
                     setTimestamp(moment.now());
                     console.log('Machine turned on', value);
                     if(sockJSConnection && sockJSConnection.length > 0) {
@@ -39,8 +39,8 @@ module.exports = {
                         }
                     }
                 }
-                if(machineStatus === '1' && value === '0') { //<- machine was turned off
-                    machineStatus = value;
+                if(machineStatus && value === '0') { //<- machine was turned off
+                    machineStatus = false;
                     setTimestamp(null);
                     console.log('Machine turned off', value);
                     if(sockJSConnection && sockJSConnection.length > 0) {
