@@ -26,7 +26,7 @@ module.exports = {
             if (filename) {
                 var value = fs.readFileSync(machineStatusFile, 'utf8');
                 console.log('value', value, 'machineStatus', machineStatus);
-                if(!machineStatus && value === '1'){ //<- machine was turned on
+                if(!machineStatus && value === 1){ //<- machine was turned on
                     machineStatus = true;
                     setTimestamp(moment.now());
                     console.log('Machine turned on', value);
@@ -39,7 +39,7 @@ module.exports = {
                         }
                     }
                 }
-                if(machineStatus && value === '0') { //<- machine was turned off
+                if(machineStatus && value === 0) { //<- machine was turned off
                     machineStatus = false;
                     setTimestamp(null);
                     console.log('Machine turned off', value);
