@@ -3,7 +3,6 @@ const fs = require('fs');
 const Gpio = require('onoff').Gpio; // Gpio class
 const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
 const gpio18 = new Gpio(18, 'in', 'both');
-const machineStatusFile = '/sys/class/gpio/gpio18/value';
 
 // var machineStatus = gpio18.readSync();
 var machineStatus = false;
@@ -22,38 +21,32 @@ module.exports = {
         setMachineStatus();
     },
     setMachineWatch: function () {
-        fs.watch(machineStatusFile, function (event, filename) {
-            if (filename) {
-                var value = fs.readFileSync(machineStatusFile, 'utf8');
-                console.log('value', value, 'machineStatus', machineStatus);
-                if(!machineStatus && value === 1){ //<- machine was turned on
-                    machineStatus = true;
-                    setTimestamp(moment.now());
-                    console.log('Machine turned on', value);
-                    if(sockJSConnection && sockJSConnection.length > 0) {
-                        for (let connection of sockJSConnection) {
-                            connection.write(JSON.stringify({
-                                machineEnabled: machineStatus,
-                                timestamp: timestamp
-                            }));
-                        }
+        gpio18.watch((err, value) => {
+            if(!machineStatus && value){ //<- machine was turned on
+                machineStatus = true;
+                setTimestamp(moment.now());
+                console.log('Machine turned on', value);
+                if(sockJSConnection && sockJSConnection.length > 0) {
+                    for (let connection of sockJSConnection) {
+                        connection.write(JSON.stringify({
+                            machineEnabled: machineStatus,
+                            timestamp: timestamp
+                        }));
                     }
                 }
-                if(machineStatus && value === 0) { //<- machine was turned off
-                    machineStatus = false;
-                    setTimestamp(null);
-                    console.log('Machine turned off', value);
-                    if(sockJSConnection && sockJSConnection.length > 0) {
-                        for (let connection of sockJSConnection) {
-                            connection.write(JSON.stringify({
-                                machineEnabled: machineStatus,
-                                timestamp: timestamp
-                            }));
-                        }
+            }
+            if(machineStatus && !value) { //<- machine was turned off
+                machineStatus = false;
+                setTimestamp(null);
+                console.log('Machine turned off', value);
+                if(sockJSConnection && sockJSConnection.length > 0) {
+                    for (let connection of sockJSConnection) {
+                        connection.write(JSON.stringify({
+                            machineEnabled: machineStatus,
+                            timestamp: timestamp
+                        }));
                     }
                 }
-            } else {
-                console.error('filename not provided');
             }
         });
     },
