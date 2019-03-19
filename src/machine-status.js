@@ -25,6 +25,7 @@ module.exports = {
         fs.watch(machineStatusFile, function (event, filename) {
             if (filename) {
                 var value = fs.readFileSync(machineStatusFile, 'utf8');
+                console.log('value', value, 'machineStatus', machineStatus);
                 if(!machineStatus && value){ //<- machine was turned on
                     machineStatus = value;
                     setTimestamp(moment.now());
