@@ -2,6 +2,7 @@ const express    = require('express');        // call express
 const https = require('https')
 const app        = express();                 // define our app using express
 const cors = require('cors');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const sockjs = require('sockjs');
 
@@ -9,7 +10,7 @@ const opts = {
     key: fs.readFileSync('certificates/server_key.pem'),
     cert: fs.readFileSync('certificates/server_cert.pem'),
     requestCert: true,
-    rejectUnauthorized: false,
+    rejectUnauthorized: true,
     ca: [fs.readFileSync('certificates/server_cert.pem')]
 }
 
