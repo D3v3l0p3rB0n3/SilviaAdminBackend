@@ -11,33 +11,82 @@ module.exports = {
          * returns a timestamp when the machine was started
          */
         router.put('/machineStatus', function(req, res) {
-            machineStatus.setMachineStatus();
-            res.send();
+            if (req.client.authorized) {
+                machineStatus.setMachineStatus();
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
         });
 
         router.put('/startBrewing', function(req, res) {
-            brewCoffee.startBrewing(req.body.brewTime);
-            res.send();
+            if (req.client.authorized) {
+                brewCoffee.startBrewing(req.body.brewTime);
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
         });
 
         router.put('/cancelBrewing', function(req, res) {
-            brewCoffee.cancelBrewing();
-            res.send();
+            if (req.client.authorized) {
+                brewCoffee.cancelBrewing();
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
+
         });
 
         router.put('/backFlush', function(req, res) {
-            machineMaintenance.startBackflush();
-            res.send();
+            if (req.client.authorized) {
+                machineMaintenance.startBackflush();
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
         });
 
         router.put('/cancelMaintenance', function(req, res) {
-            machineMaintenance.cancelMaintenance();
-            res.send();
+            if (req.client.authorized) {
+                machineMaintenance.cancelMaintenance();
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
         });
 
         router.put('/antiLiming', function(req, res) {
-            machineMaintenance.startAntiLiming();
-            res.send();
+            if (req.client.authorized) {
+                machineMaintenance.startAntiLiming();
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
         });
     }
 };

@@ -1,9 +1,17 @@
 const express    = require('express');        // call express
-const http = require('http');
+const https = require('https')
 const app        = express();                 // define our app using express
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const sockjs = require('sockjs');
+
+const opts = {
+    key: fs.readFileSync('certificates/server_key.pem'),
+    cert: fs.readFileSync('certificates/server_cert.pem'),
+    requestCert: true,
+    rejectUnauthorized: true,
+    ca: [fs.readFileSync('certificates/server_cert.pem')]
+}
 
 //lokale skripte
 const restController = require('./restController');
@@ -44,10 +52,6 @@ app.use(cors());
 restController.initializeController(router);
 app.use('/', router);
 
-const server = http.createServer(app);
+const server = https.createServer(opts, app);
 sockjs_echo.installHandlers(server);
 machineStatus.setMachineWatch();
-
-server.listen(port, '0.0.0.0', () => {
-    console.log(' [*] Listening on 0.0.0.0:' + port);
-});
