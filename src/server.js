@@ -9,7 +9,7 @@ const opts = {
     key: fs.readFileSync('certificates/server_key.pem'),
     cert: fs.readFileSync('certificates/server_cert.pem'),
     requestCert: true,
-    rejectUnauthorized: true,
+    rejectUnauthorized: false,
     ca: [fs.readFileSync('certificates/server_cert.pem')]
 }
 
