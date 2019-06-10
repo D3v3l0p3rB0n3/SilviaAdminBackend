@@ -20,7 +20,7 @@ const machineStatus = require('./machine-status');
 
 
 //sockets:
-const sockjs_opts = {
+/*const sockjs_opts = {
     prefix: '/machineStatusWebSocket'
 };
 
@@ -34,7 +34,7 @@ sockjs_echo.on('connection', conn => {
     conn.on('close', function() {
         machineStatus.closeConnection(conn);
     });
-});
+});*/
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -54,5 +54,5 @@ restController.initializeController(router);
 app.use('/', router);
 
 const server = https.createServer(opts, app);
-sockjs_echo.installHandlers(server);
-machineStatus.setMachineWatch();
+// sockjs_echo.installHandlers(server);
+// machineStatus.setMachineWatch();

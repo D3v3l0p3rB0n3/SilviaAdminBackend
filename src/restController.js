@@ -6,6 +6,17 @@ var machineMaintenance = require('./machine-maintenance');
 
 module.exports = {
     initializeController: function (router) {
+		router.get('/test', function(req, res) {
+            if (req.client.authorized) {
+                res.send();
+            } else if (cert.subject) {
+                res.status(403)
+                    .send(`Not permitted`)
+            } else {
+                res.status(401)
+                    .send(`No client-certificate passed`)
+            }
+        });
         /**
          * Service to switch the status of the machine
          * returns a timestamp when the machine was started
