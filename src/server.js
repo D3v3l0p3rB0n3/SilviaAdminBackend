@@ -43,16 +43,11 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 8081;        // set our port
 
-// ROUTES FOR OUR API
-// =============================================================================
-const router = express.Router();              // get an instance of the express Router
-
 // set cors header
 app.use(cors());
 // rest interfaces are implemented here
-restController.initializeController(router);
-app.use('/', router);
+restController.initializeController(app);
 
-const server = https.createServer(opts, app);
+const server = https.createServer(opts, app).listen(port);
 // sockjs_echo.installHandlers(server);
 // machineStatus.setMachineWatch();
