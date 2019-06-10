@@ -10,7 +10,7 @@ const opts = {
     key: fs.readFileSync('certificates/server_key.pem'),
     cert: fs.readFileSync('certificates/server_cert.pem'),
     requestCert: true,
-    rejectUnauthorized: false,
+    rejectUnauthorized: true,
     ca: [fs.readFileSync('certificates/server_cert.pem')]
 }
 
@@ -20,7 +20,7 @@ const machineStatus = require('./machine-status');
 
 
 //sockets:
-/*const sockjs_opts = {
+const sockjs_opts = {
     prefix: '/machineStatusWebSocket'
 };
 
@@ -34,7 +34,7 @@ sockjs_echo.on('connection', conn => {
     conn.on('close', function() {
         machineStatus.closeConnection(conn);
     });
-});*/
+});
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -49,5 +49,5 @@ app.use(cors());
 restController.initializeController(app);
 
 const server = https.createServer(opts, app).listen(port);
-// sockjs_echo.installHandlers(server);
-// machineStatus.setMachineWatch();
+sockjs_echo.installHandlers(server);
+machineStatus.setMachineWatch();
