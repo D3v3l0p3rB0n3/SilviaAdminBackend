@@ -7,18 +7,19 @@ var machineMaintenance = require('./machine-maintenance');
 module.exports = {
     initializeController: function(app) {
 		
-		app.get('/test', function(req, res) {
-            if (req.client.authorized) {
-                machineStatus.setMachineStatus();
-                res.send();
-            } else if (cert.subject) {
-                res.status(403)
-                    .send(`Not permitted`)
-            } else {
-                res.status(401)
-                    .send(`No client-certificate passed`)
-            }
-        });
+		app.get('/authenticate', (req, res) => {
+    const cert = req.connection.getPeerCertificate();
+    if (req.client.authorized) {
+        res.status(200).send();
+    } else if (cert.subject) {
+        res.status(403)
+            .send(`Sorry ${cert.subject.CN}, certificates from ${cert.issuer.CN} are not welcome here.`)
+    } else {
+        res.status(401)
+            .send(`Sorry, but you need to provide a client certificate to continue.`)
+    }
+})
+
         /**
          * Service to switch the status of the machine
          * returns a timestamp when the machine was started
