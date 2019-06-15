@@ -23,8 +23,7 @@ module.exports = {
         app.get('/authenticateiPhone', (req, res) => {
             const cert = req.connection.getPeerCertificate();
             if (req.client.authorized) {
-                res.status(200).send();
-//res.redirect(301, 'http://adminconsole.felix-grabscheit.de')
+                res.redirect(301, 'http://adminconsole.felix-grabscheit.de')
             } else if (cert.subject) {
                 res.status(403)
                     .send(`Sorry ${cert.subject.CN}, certificates from ${cert.issuer.CN} are not welcome here.`)
