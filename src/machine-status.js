@@ -4,7 +4,6 @@ const Gpio = require('onoff').Gpio; // Gpio class
 const gpio17 = new Gpio(17, 'out'); // Set GPIO_NR for relais to start and stop the machine
 const gpio18 = new Gpio(18, 'in', 'both');
 
-// var machineStatus = gpio18.readSync();
 var machineStatus = false;
 var timestamp;
 var sockJSConnection = [];
@@ -19,6 +18,9 @@ module.exports = {
     },
     setMachineStatus: function () {
         setMachineStatus();
+    },
+    setMachineStatusOn: function () {
+        setMachineStatusOn();
     },
     setMachineWatch: function () {
         gpio18.watch((err, value) => {
@@ -58,9 +60,9 @@ module.exports = {
         console.log('connection closed', conn.id);
         const newConnectionArray = [];
         for (let connIndex in sockJSConnection){
-           if(sockJSConnection[connIndex].id !== conn.id) {
-               newConnectionArray.push(sockJSConnection[connIndex]);
-           }
+            if(sockJSConnection[connIndex].id !== conn.id) {
+                newConnectionArray.push(sockJSConnection[connIndex]);
+            }
         }
         sockJSConnection = newConnectionArray;
     }
@@ -69,6 +71,12 @@ module.exports = {
 function setTimestamp(_timestamp) {
     timestamp = _timestamp;
 }
+function setMachineStatusOn() {
+    if(!machineStatus){
+        setMachineStatus()
+    }
+}
+
 function setMachineStatus() {
     gpio17.writeSync(1);
     setTimeout(()=> {

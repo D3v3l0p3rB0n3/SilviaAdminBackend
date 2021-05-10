@@ -1,18 +1,9 @@
 const express    = require('express');        // call express
-const https = require('https')
+const http = require('http');
 const app        = express();                 // define our app using express
 const cors = require('cors');
-const fs = require('fs');
 const bodyParser = require('body-parser');
 const sockjs = require('sockjs');
-
-const opts = {
-    key: fs.readFileSync('certificates/server_key.pem'),
-    cert: fs.readFileSync('certificates/server_cert.pem'),
-    requestCert: true,
-    rejectUnauthorized: false,
-    ca: [fs.readFileSync('certificates/server_cert.pem')]
-}
 
 //lokale skripte
 const restController = require('./restController');
@@ -43,11 +34,20 @@ app.use(bodyParser.json());
 
 const port = process.env.PORT || 8081;        // set our port
 
+// ROUTES FOR OUR API
+// =============================================================================
+const router = express.Router();              // get an instance of the express Router
+
 // set cors header
 app.use(cors());
 // rest interfaces are implemented here
-restController.initializeController(app);
+restController.initializeController(router);
+app.use('/', router);
 
-const server = https.createServer(opts, app).listen(port);
+const server = http.createServer(app);
 sockjs_echo.installHandlers(server);
 machineStatus.setMachineWatch();
+
+server.listen(port, '0.0.0.0', () => {
+    console.log(' [*] Listening on 0.0.0.0:' + port);
+});
