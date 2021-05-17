@@ -20,6 +20,11 @@ module.exports = {
             res.send();
         });
 
+        router.put('/machineStatusOff', function(req, res) {
+            machineStatus.setMachineStatusOff();
+            res.send();
+        });
+
         router.put('/startBrewing', function(req, res) {
             brewCoffee.startBrewing(req.body.brewTime);
             res.send();
