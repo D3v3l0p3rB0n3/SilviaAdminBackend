@@ -15,12 +15,12 @@ module.exports = {
             res.send();
         });
 
-        router.put('/machineStatusOn', function(req, res) {
+        router.get('/machineStatusOn', function(req, res) {
             machineStatus.setMachineStatusOn();
             res.send();
         });
 
-        router.put('/machineStatusOff', function(req, res) {
+        router.get('/machineStatusOff', function(req, res) {
             machineStatus.setMachineStatusOff();
             res.send();
         });
